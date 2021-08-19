@@ -1,24 +1,22 @@
-import idFinder from "./idFinder";
-import {VIDEOS_IDS} from "../constans/common";
+import { VIDEOS_IDS } from "../constans/common";
+import { VideoType } from '../types/VideoType';
 
-export const addVideoToLocalStorage = (video: any): void => {
-    const searchDataFromLocalStorage = [...getVideosFromLocalStorage(), video]
+export const getVideosFromLocalStorage = (): Array<VideoType> => {
+  const videosIds = localStorage.getItem(VIDEOS_IDS);
 
-    localStorage.setItem(VIDEOS_IDS,
-        JSON.stringify(searchDataFromLocalStorage));
+  if (videosIds) {
+    return JSON.parse(videosIds);
+  }
+
+  return [];
 };
 
-export const getVideosFromLocalStorage = (): Array<string> => {
-    const videosIds = localStorage.getItem(VIDEOS_IDS);
+export const addVideoToLocalStorage = (video: any): void => {
+  const searchDataFromLocalStorage = [video, ...getVideosFromLocalStorage()];
 
-    if (videosIds) {
-        return JSON.parse(videosIds);
-    }
-
-    return [];
-}
+  localStorage.setItem(VIDEOS_IDS, JSON.stringify(searchDataFromLocalStorage));
+};
 
 export const deleteAllVideosFromLocalStorage = () => {
-    localStorage.setItem(VIDEOS_IDS,
-        JSON.stringify([]));
-}
+  localStorage.setItem(VIDEOS_IDS, JSON.stringify([]));
+};

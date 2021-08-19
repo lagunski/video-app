@@ -1,17 +1,22 @@
 import React from 'react';
-import {AddVideo} from "../searchBar/SearchBar";
-import {deleteAllVideosAC} from "../../actions/videos.actions";
-import {useDispatch} from "react-redux";
+import { useDispatch } from 'react-redux';
+import AddVideo from '../searchBar/SearchBar';
+import { deleteAllVideosAC } from '../../store/videos/videosActionTypes';
+import { deleteAllVideosFromLocalStorage } from '../../utils/localStorage.utils';
 
-//TODO remove any
-export const Header = () => {
-    const dispatch = useDispatch();
-    const onDelete = () => dispatch(deleteAllVideosAC())
-    return (
-        <>
-            <AddVideo/>
-            <button onClick={onDelete}>delete all</button>
-        </>
-    );
-}
+//  TODO remove any
+const Header: React.FC = () => {
+  const dispatch = useDispatch();
+  const onDelete = (): void => {
+    dispatch(deleteAllVideosAC());
+    deleteAllVideosFromLocalStorage();
+  };
+  return (
+    <>
+      <AddVideo />
+      <button type='button' onClick={onDelete}>delete all</button>
+    </>
+  );
+};
 
+export default Header;

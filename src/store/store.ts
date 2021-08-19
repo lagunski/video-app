@@ -1,6 +1,6 @@
 import {applyMiddleware, combineReducers, createStore} from "redux";
 import thunkMiddleware from "redux-thunk";
-import {videosReducer} from "./videosReducer";
+import {videosReducer} from "./videos/videosReducer";
 
 const rootReducer = combineReducers({
     videos: videosReducer
