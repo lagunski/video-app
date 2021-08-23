@@ -1,9 +1,11 @@
 import React, { FC } from "react";
 import { useDispatch } from "react-redux";
 import {
+  changeLikeStatusAC,
   setCurrentVideoId,
   toggleViewModeAC,
 } from "../../../store/videos/videosActionTypes";
+import { Button } from "reactstrap";
 
 type PropsType = {
   id: string;
@@ -12,6 +14,7 @@ type PropsType = {
   viewCount: string;
   publishedAt: string;
   thumbnails: string;
+  likeStatus: boolean;
   onDeleteVideo: (id: string) => void;
 };
 
@@ -23,6 +26,7 @@ const VideoItem: FC<PropsType> = ({
   publishedAt,
   thumbnails,
   onDeleteVideo,
+  likeStatus,
 }) => {
   const dispatch = useDispatch();
 
@@ -30,9 +34,13 @@ const VideoItem: FC<PropsType> = ({
     onDeleteVideo(id);
   };
 
-  const showVideo = () => {
+  const showVideo = (): void => {
     dispatch(setCurrentVideoId(id));
     dispatch(toggleViewModeAC());
+  };
+
+  const changeLikeStatus = (): void => {
+    dispatch(changeLikeStatusAC(id, likeStatus));
   };
 
   return (
@@ -44,12 +52,30 @@ const VideoItem: FC<PropsType> = ({
       <div>
         <img src={thumbnails} alt="miniatura" />
       </div>
-      <button type="button" onClick={deleteVideo}>
-        delete
-      </button>
-      <button type="button" onClick={showVideo}>
-        view
-      </button>
+      <div style={{ paddingTop: "10px" }}>
+        <Button
+          style={{ marginRight: "5px" }}
+          type="button"
+          onClick={deleteVideo}
+        >
+          delete
+        </Button>
+        <Button
+          style={{ marginRight: "5px" }}
+          type="button"
+          onClick={showVideo}
+        >
+          view
+        </Button>
+        <Button
+          style={{ marginRight: "5px" }}
+          type="button"
+          color={likeStatus ? "danger" : "secondary"}
+          onClick={changeLikeStatus}
+        >
+          like
+        </Button>
+      </div>
     </div>
   );
 };

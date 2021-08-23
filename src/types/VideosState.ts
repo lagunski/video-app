@@ -5,4 +5,5 @@ export type VideosState = {
   toggleViewMode: boolean;
   isFetched: boolean;
   currentVideoId: string;
+  isActiveFilter: boolean;
 };

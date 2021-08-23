@@ -10,19 +10,28 @@ import { VIDEOS_IDS } from "../../constans/common";
 import { VideoType } from "../../types/VideoType";
 import {
   ADD_NEW_VIDEO,
+  CHANGE_lIKE_STATUS,
   DELETE_ONE_VIDEO,
   DELETE_VIDEO,
   SET_CURRENT_VIDEO_ID,
   SET_CURRENT_VIDEOS,
+  TOGGLE_FILTER,
   TOGGLE_VIEW_MODE,
+  UPDATE_LOCAL_STORAGE_STATE,
 } from "./videosActions";
 import { VideosState } from "../../types/VideosState";
+import {
+  getVideosFromLocalStorage,
+  updateLocalStorageVideos,
+} from "../../utils/localStorage.utils";
+import { VideosLocalStorageState } from "../../types/VideosLocalStorageState";
 
 const initialState: VideosState = {
   items: [],
   toggleViewMode: false,
   isFetched: true,
   currentVideoId: "",
+  isActiveFilter: false,
 };
 
 export const videosReducer = (
@@ -31,39 +40,61 @@ export const videosReducer = (
 ): VideosState => {
   switch (action.type) {
     case SET_CURRENT_VIDEOS:
-      return { ...state, items: action.videos };
+      const videosFromLS = getVideosFromLocalStorage();
+      const result = action.videos.map((video) => {
+        const currentVideoFromLS = videosFromLS.find(
+          (videoLS) => video.id === videoLS.id
+        );
+        return { ...video, likeStatus: currentVideoFromLS?.likeStatus };
+      });
+      return { ...state, items: result };
     case ADD_NEW_VIDEO:
       return { ...state, items: [action.video, ...state.items] };
     case DELETE_VIDEO:
       return { ...state, items: [] };
     case DELETE_ONE_VIDEO:
-      const deleteOneVideoFromLocalStorage = (): void => {
-        const copyState = state.items.filter((item) => item.id !== action.id);
-        localStorage.setItem(VIDEOS_IDS, JSON.stringify(copyState));
-      };
-      deleteOneVideoFromLocalStorage();
+      const filteredItems = state.items.filter((item) => item.id !== action.id);
+      updateLocalStorageVideos(filteredItems);
       return {
         ...state,
-        items: state.items.filter((item) => item.id !== action.id),
+        items: filteredItems,
       };
     case TOGGLE_VIEW_MODE:
       return { ...state, toggleViewMode: !state.toggleViewMode };
     case SET_CURRENT_VIDEO_ID:
       return { ...state, currentVideoId: action.id };
+    case CHANGE_lIKE_STATUS:
+      const mappedItems = state.items.map((video) => {
+        if (video.id === action.id) {
+          return { ...video, likeStatus: !video.likeStatus };
+        }
+        return video;
+      });
+      updateLocalStorageVideos(mappedItems);
+      return {
+        ...state,
+        items: mappedItems,
+      };
+    case UPDATE_LOCAL_STORAGE_STATE:
+      // state.items.map((item)=> );
+      localStorage.setItem(VIDEOS_IDS, JSON.stringify(state));
+      return { ...state };
+    case TOGGLE_FILTER:
+      return { ...state, isActiveFilter: !state.isActiveFilter };
     default:
       return { ...state };
   }
 };
 // перед dispatch отсортировать videos по type и разные типы загружать из разных ресурсов, объединяя через Promise.all(youtube), getVideoResource(vimeo), getVideoResource(ok)).then([], [], [])
 export const loadVideosInfoTC =
-  (videos: Array<VideoType>) => (dispatch: Dispatch) => {
+  (videos: Array<VideosLocalStorageState>) => (dispatch: Dispatch) => {
     youtubeAPI.getVideosList(videos).then((items) => {
       dispatch(setCurrentVideosAC(items));
     });
   };
 
 export const loadVideoInfoTC = (video: any) => (dispatch: Dispatch) => {
-  getVideoResource(video.type)([video]).then((item) => {
+  getVideoResource(video.videoService)([video]).then((item) => {
     dispatch(addNewVideoAC(item[0]));
   });
 };

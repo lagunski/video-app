@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo } from "react";
+import React, { FC, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import classes from "./viewModal.module.css";
 import { AppRootStateType } from "../../store/store";

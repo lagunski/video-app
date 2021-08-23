@@ -1,11 +1,12 @@
-import { VideoServices } from './idFinder';
-import youtubeAPI from '../api/youtubeAPI';
+import youtubeAPI from "../api/youtubeAPI";
+import { VideoService } from "../types/VideoService";
 
 const API_RESOURCES = {
-  [VideoServices.YOUTUBE]: youtubeAPI.getVideosList,
-  [VideoServices.VIMEO]: youtubeAPI.getVideosList
+  [VideoService.YOUTUBE]: youtubeAPI.getVideosList,
+  [VideoService.VIMEO]: youtubeAPI.getVideosList,
 };
 
-const getVideoResource = (serviceType: VideoServices) => API_RESOURCES[serviceType];
+const getVideoResource = (serviceType: VideoService) =>
+  API_RESOURCES[serviceType];
 
 export default getVideoResource;
