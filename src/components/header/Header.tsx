@@ -4,6 +4,8 @@ import AddVideo from "../searchBar/SearchBar";
 import {
   deleteAllVideosAC,
   likeFilterAC,
+  sortDescAC,
+  sortAscAC,
 } from "../../store/videos/videosActionTypes";
 import { deleteAllVideosFromLocalStorage } from "../../utils/localStorage.utils";
 import { Button } from "reactstrap";
@@ -12,7 +14,7 @@ import { AppRootStateType } from "../../store/store";
 //  TODO remove any
 const Header: React.FC = () => {
   const dispatch = useDispatch();
-  const { isActiveFilter } = useSelector(
+  const { isActiveFilter, isActiveSortAsc, isActiveSortDesc } = useSelector(
     (state: AppRootStateType) => state.videos
   );
   const onDelete = (): void => {
@@ -21,6 +23,14 @@ const Header: React.FC = () => {
   };
   const onFilter = () => {
     dispatch(likeFilterAC());
+  };
+
+  const onSortedAsc = () => {
+    dispatch(sortAscAC());
+  };
+
+  const onSortedDesc = () => {
+    dispatch(sortDescAC());
   };
   return (
     <>
@@ -35,6 +45,22 @@ const Header: React.FC = () => {
         color={isActiveFilter ? "danger" : "secondary"}
       >
         filter
+      </Button>
+      <Button
+        style={{ marginRight: "5px" }}
+        type="button"
+        onClick={onSortedAsc}
+        color={isActiveSortAsc ? "danger" : "secondary"}
+      >
+        Sort Asc
+      </Button>
+      <Button
+        style={{ marginRight: "5px" }}
+        type="button"
+        onClick={onSortedDesc}
+        color={isActiveSortDesc ? "danger" : "secondary"}
+      >
+        Sort Desc
       </Button>
     </>
   );

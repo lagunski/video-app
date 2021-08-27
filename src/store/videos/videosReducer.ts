@@ -7,7 +7,6 @@ import {
 import youtubeAPI from "../../api/youtubeAPI";
 import getVideoResource from "../../utils/api.utils";
 import { VIDEOS_IDS } from "../../constans/common";
-import { VideoType } from "../../types/VideoType";
 import {
   ADD_NEW_VIDEO,
   CHANGE_lIKE_STATUS,
@@ -15,6 +14,8 @@ import {
   DELETE_VIDEO,
   SET_CURRENT_VIDEO_ID,
   SET_CURRENT_VIDEOS,
+  SORT_ASC,
+  SORT_DESC,
   TOGGLE_FILTER,
   TOGGLE_VIEW_MODE,
   UPDATE_LOCAL_STORAGE_STATE,
@@ -32,6 +33,8 @@ const initialState: VideosState = {
   isFetched: true,
   currentVideoId: "",
   isActiveFilter: false,
+  isActiveSortAsc: false,
+  isActiveSortDesc: false,
 };
 
 export const videosReducer = (
@@ -81,6 +84,32 @@ export const videosReducer = (
       return { ...state };
     case TOGGLE_FILTER:
       return { ...state, isActiveFilter: !state.isActiveFilter };
+    case SORT_ASC: {
+      return {
+        ...state,
+        isActiveSortAsc: !state.isActiveSortAsc,
+        isActiveSortDesc: false,
+        items: state.items.sort((a, b) => {
+          return (
+            new Date(a.snippet.publishedAt).getTime() -
+            new Date(b.snippet.publishedAt).getTime()
+          );
+        }),
+      };
+    }
+    case SORT_DESC: {
+      return {
+        ...state,
+        isActiveSortDesc: !state.isActiveSortDesc,
+        isActiveSortAsc: false,
+        items: state.items.sort((a, b) => {
+          return (
+            new Date(b.snippet.publishedAt).getTime() -
+            new Date(a.snippet.publishedAt).getTime()
+          );
+        }),
+      };
+    }
     default:
       return { ...state };
   }

@@ -6,4 +6,6 @@ export type VideosState = {
   isFetched: boolean;
   currentVideoId: string;
   isActiveFilter: boolean;
+  isActiveSortAsc: boolean;
+  isActiveSortDesc: boolean;
 };

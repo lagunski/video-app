@@ -6,6 +6,8 @@ import {
   DELETE_VIDEO,
   SET_CURRENT_VIDEO_ID,
   SET_CURRENT_VIDEOS,
+  SORT_ASC,
+  SORT_DESC,
   TOGGLE_FILTER,
   TOGGLE_VIEW_MODE,
   UPDATE_LOCAL_STORAGE_STATE,
@@ -23,6 +25,10 @@ export const setCurrentVideoId = (id: string) =>
 export const deleteAllVideosAC = () => ({ type: DELETE_VIDEO } as const);
 
 export const toggleViewModeAC = () => ({ type: TOGGLE_VIEW_MODE } as const);
+
+export const sortAscAC = () => ({ type: SORT_ASC } as const);
+
+export const sortDescAC = () => ({ type: SORT_DESC } as const);
 
 export const likeFilterAC = () => ({ type: TOGGLE_FILTER } as const);
 
@@ -44,4 +50,6 @@ export type ActionsType =
   | ReturnType<typeof setCurrentVideoId>
   | ReturnType<typeof changeLikeStatusAC>
   | ReturnType<typeof updateLocalStorageStateAC>
-  | ReturnType<typeof likeFilterAC>;
+  | ReturnType<typeof likeFilterAC>
+  | ReturnType<typeof sortAscAC>
+  | ReturnType<typeof sortDescAC>;

@@ -12,7 +12,7 @@ type PropsType = {
   title: string;
   likeCount: string;
   viewCount: string;
-  publishedAt: string;
+  publishedAt: string | Date;
   thumbnails: string;
   likeStatus: boolean;
   onDeleteVideo: (id: string) => void;
@@ -43,12 +43,15 @@ const VideoItem: FC<PropsType> = ({
     dispatch(changeLikeStatusAC(id, likeStatus));
   };
 
+  let date = new Date(publishedAt);
+  let result = date.toISOString().slice(0, 10);
+
   return (
     <div>
       <div> {title} </div>
       <div> Liczba polubień: {likeCount} </div>
       <div> Liczba odtworzeń: {viewCount}</div>
-      <div> Data dodania: {publishedAt}</div>
+      <div> Data dodania: {result}</div>
       <div>
         <img src={thumbnails} alt="miniatura" />
       </div>

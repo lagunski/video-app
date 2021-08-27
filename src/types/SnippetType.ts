@@ -1,15 +1,15 @@
 export type SnippetType = {
-  publishedAt: string,
-  title: string,
+  publishedAt: string | Date;
+  title: string;
   thumbnails: {
     default: {
-      url: string
-    },
+      url: string;
+    };
     medium: {
-      url: string
-    },
+      url: string;
+    };
     high: {
-      url: string
-    }
-  }
-}
+      url: string;
+    };
+  };
+};
