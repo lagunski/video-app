@@ -4,12 +4,14 @@ import {
   CHANGE_lIKE_STATUS,
   DELETE_ONE_VIDEO,
   DELETE_VIDEO,
+  SET_CURRENT_PAGE,
   SET_CURRENT_VIDEO_ID,
   SET_CURRENT_VIDEOS,
   SORT_ASC,
   SORT_DESC,
   TOGGLE_FILTER,
   TOGGLE_VIEW_MODE,
+  TOTAL_VIDEOS_COUNT,
   UPDATE_LOCAL_STORAGE_STATE,
 } from "./videosActions";
 
@@ -41,6 +43,12 @@ export const changeLikeStatusAC = (id: string, likeStatus: boolean) =>
 export const updateLocalStorageStateAC = () =>
   ({ type: UPDATE_LOCAL_STORAGE_STATE } as const);
 
+export const setCurrentPageAC = (currentPage: number) =>
+  ({ type: SET_CURRENT_PAGE, currentPage } as const);
+
+export const setTotalVideosCount = (totalVideosCount: number) =>
+  ({ type: TOTAL_VIDEOS_COUNT, totalVideosCount } as const);
+
 export type ActionsType =
   | ReturnType<typeof setCurrentVideosAC>
   | ReturnType<typeof addNewVideoAC>
@@ -52,4 +60,6 @@ export type ActionsType =
   | ReturnType<typeof updateLocalStorageStateAC>
   | ReturnType<typeof likeFilterAC>
   | ReturnType<typeof sortAscAC>
-  | ReturnType<typeof sortDescAC>;
+  | ReturnType<typeof sortDescAC>
+  | ReturnType<typeof setCurrentPageAC>
+  | ReturnType<typeof setTotalVideosCount>;

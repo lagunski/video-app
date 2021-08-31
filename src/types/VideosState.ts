@@ -8,4 +8,7 @@ export type VideosState = {
   isActiveFilter: boolean;
   isActiveSortAsc: boolean;
   isActiveSortDesc: boolean;
+  pageSize: number;
+  totalVideosCount: number;
+  currentPage: number;
 };

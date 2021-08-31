@@ -6,10 +6,13 @@ import {
   likeFilterAC,
   sortDescAC,
   sortAscAC,
+  setCurrentPageAC,
 } from "../../store/videos/videosActionTypes";
 import { deleteAllVideosFromLocalStorage } from "../../utils/localStorage.utils";
 import { Button } from "reactstrap";
 import { AppRootStateType } from "../../store/store";
+import classes from "./header.module.css";
+import Pagination from "../pagination";
 
 //  TODO remove any
 const Header: React.FC = () => {
@@ -21,47 +24,48 @@ const Header: React.FC = () => {
     dispatch(deleteAllVideosAC());
     deleteAllVideosFromLocalStorage();
   };
-  const onFilter = () => {
+  const onFilter = (): void => {
     dispatch(likeFilterAC());
   };
 
-  const onSortedAsc = () => {
+  const onSortedAsc = (): void => {
     dispatch(sortAscAC());
   };
 
-  const onSortedDesc = () => {
+  const onSortedDesc = (): void => {
     dispatch(sortDescAC());
   };
+
   return (
     <>
       <AddVideo />
-      <Button type="button" onClick={onDelete} style={{ marginRight: "5px" }}>
-        delete all
-      </Button>
-      <Button
-        style={{ marginRight: "5px" }}
-        type="button"
-        onClick={onFilter}
-        color={isActiveFilter ? "danger" : "secondary"}
-      >
-        filter
-      </Button>
-      <Button
-        style={{ marginRight: "5px" }}
-        type="button"
-        onClick={onSortedAsc}
-        color={isActiveSortAsc ? "danger" : "secondary"}
-      >
-        Sort Asc
-      </Button>
-      <Button
-        style={{ marginRight: "5px" }}
-        type="button"
-        onClick={onSortedDesc}
-        color={isActiveSortDesc ? "danger" : "secondary"}
-      >
-        Sort Desc
-      </Button>
+      <div className={classes.wrapper}>
+        <Button type="button" onClick={onDelete}>
+          delete all
+        </Button>
+        <Button
+          type="button"
+          onClick={onFilter}
+          color={isActiveFilter ? "danger" : "secondary"}
+        >
+          filter
+        </Button>
+        <Button
+          type="button"
+          onClick={onSortedAsc}
+          color={isActiveSortAsc ? "danger" : "secondary"}
+        >
+          Sort Asc
+        </Button>
+        <Button
+          type="button"
+          onClick={onSortedDesc}
+          color={isActiveSortDesc ? "danger" : "secondary"}
+        >
+          Sort Desc
+        </Button>
+        <Pagination />
+      </div>
     </>
   );
 };

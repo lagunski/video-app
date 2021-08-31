@@ -6,6 +6,7 @@ import {
   toggleViewModeAC,
 } from "../../../store/videos/videosActionTypes";
 import { Button } from "reactstrap";
+import classes from "./videoItem.module.css";
 
 type PropsType = {
   id: string;
@@ -47,7 +48,7 @@ const VideoItem: FC<PropsType> = ({
   let result = date.toISOString().slice(0, 10);
 
   return (
-    <div>
+    <div className={classes.wrapper}>
       <div> {title} </div>
       <div> Liczba polubień: {likeCount} </div>
       <div> Liczba odtworzeń: {viewCount}</div>

@@ -8,7 +8,6 @@ export const getVideosFromLocalStorage = (): Array<VideosLocalStorageState> => {
   if (videosIds) {
     return JSON.parse(videosIds);
   }
-
   return [];
 };
 
@@ -22,17 +21,23 @@ export const deleteAllVideosFromLocalStorage = () => {
   localStorage.setItem(VIDEOS_IDS, JSON.stringify([]));
 };
 
-export const updateLocalStorageVideos = (videos: Array<VideoType>): void => {
+export const changeLikeStatusVideosFromLS = (id: string): void => {
   localStorage.setItem(
     VIDEOS_IDS,
     JSON.stringify(
-      videos.map((item) => {
-        return {
-          id: item.id,
-          videoService: item.videoService,
-          likeStatus: item.likeStatus,
-        };
+      getVideosFromLocalStorage().map((item) => {
+        if (id === item.id) {
+          return { ...item, likeStatus: !item.likeStatus };
+        }
+        return item;
       })
     )
+  );
+};
+
+export const deleteItemFromLS = (id: string): void => {
+  localStorage.setItem(
+    VIDEOS_IDS,
+    JSON.stringify(getVideosFromLocalStorage().filter((item) => item.id !== id))
   );
 };

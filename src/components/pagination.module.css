@@ -1,0 +1,9 @@
+.selectedPage {
+    font-weight: bold;
+}
+
+.wrapper span {
+    padding: 5px;
+    margin: 5px;
+    cursor: pointer;
+}

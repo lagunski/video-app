@@ -4,6 +4,7 @@ import { Button, Form, FormGroup, Input } from "reactstrap";
 import { addVideoToLocalStorage } from "../../utils/localStorage.utils";
 import { getVideoServiceInfo } from "../../utils/idFinder";
 import { loadVideoInfoTC } from "../../store/videos/videosReducer";
+import classes from "./searchBar.module.css";
 
 //  TODO remove any
 const AddVideo: React.FC = () => {
@@ -22,11 +23,13 @@ const AddVideo: React.FC = () => {
     setSearchData(e.target.value);
   };
   return (
-    <Form className="d-flex" style={{ margin: "5px" }}>
+    <Form className={classes.form}>
       <FormGroup>
         <Input type="text" value={searchData} onChange={onChangeHandler} />
       </FormGroup>
-      <Button onClick={handleClick}>Add</Button>
+      <Button className={classes.button} onClick={handleClick}>
+        Add
+      </Button>
     </Form>
   );
 };

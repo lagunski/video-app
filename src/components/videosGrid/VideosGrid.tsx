@@ -19,6 +19,7 @@ const VideosGrid: FC = () => {
 
   const callBack = (video: VideoType) => (
     <div key={video.id}>
+      <hr />
       <VideoItem
         key={video.id}
         id={video.id}

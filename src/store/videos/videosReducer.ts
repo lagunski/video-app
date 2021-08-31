@@ -12,18 +12,21 @@ import {
   CHANGE_lIKE_STATUS,
   DELETE_ONE_VIDEO,
   DELETE_VIDEO,
+  SET_CURRENT_PAGE,
   SET_CURRENT_VIDEO_ID,
   SET_CURRENT_VIDEOS,
   SORT_ASC,
   SORT_DESC,
   TOGGLE_FILTER,
   TOGGLE_VIEW_MODE,
+  TOTAL_VIDEOS_COUNT,
   UPDATE_LOCAL_STORAGE_STATE,
 } from "./videosActions";
 import { VideosState } from "../../types/VideosState";
 import {
+  changeLikeStatusVideosFromLS,
+  deleteItemFromLS,
   getVideosFromLocalStorage,
-  updateLocalStorageVideos,
 } from "../../utils/localStorage.utils";
 import { VideosLocalStorageState } from "../../types/VideosLocalStorageState";
 
@@ -35,6 +38,9 @@ const initialState: VideosState = {
   isActiveFilter: false,
   isActiveSortAsc: false,
   isActiveSortDesc: false,
+  pageSize: 2,
+  totalVideosCount: 0,
+  currentPage: 1,
 };
 
 export const videosReducer = (
@@ -57,7 +63,7 @@ export const videosReducer = (
       return { ...state, items: [] };
     case DELETE_ONE_VIDEO:
       const filteredItems = state.items.filter((item) => item.id !== action.id);
-      updateLocalStorageVideos(filteredItems);
+      deleteItemFromLS(action.id);
       return {
         ...state,
         items: filteredItems,
@@ -73,7 +79,7 @@ export const videosReducer = (
         }
         return video;
       });
-      updateLocalStorageVideos(mappedItems);
+      changeLikeStatusVideosFromLS(action.id);
       return {
         ...state,
         items: mappedItems,
@@ -109,6 +115,13 @@ export const videosReducer = (
           );
         }),
       };
+    }
+    case SET_CURRENT_PAGE: {
+      return { ...state, currentPage: action.currentPage };
+    }
+
+    case TOTAL_VIDEOS_COUNT: {
+      return { ...state, totalVideosCount: action.totalVideosCount };
     }
     default:
       return { ...state };
